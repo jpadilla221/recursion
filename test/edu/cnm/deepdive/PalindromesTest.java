@@ -3,17 +3,20 @@ package edu.cnm.deepdive;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class PalindromesTest {
 
-  static final String[] positiveTestData = {
-      "racecar",
-      "Race Car",
-      "radar",
-      "",
-      "x",
-      "Xx",
-      "A man, a plan, a canal - Panama!"
+  static final Object[][] positiveTestData = {
+      {"racecar"},
+      {"Race Car"},
+      {"radar"},
+      {""},
+      {"x"},
+      {"Xx"},
+      {"A man, a plan, a canal - Panama!"}
   };
 
   static final String[] negativeTestData = {
@@ -23,11 +26,15 @@ class PalindromesTest {
       "Burrito Dog"
   };
 
-  @Test
-  void isPalindromeAffirmative() {
-    for (String testCase : positiveTestData) {
-      assertTrue(Palindromes.isPalindrome(testCase));
-    }
+  private static Object[][] affirmativeCases() {
+    return positiveTestData;
+  }
+
+  @ParameterizedTest
+
+  @CsvFileSource(resources = "/affirmative.csv")
+  void isPalindromeAffirmative(String testCase) {
+    assertTrue(Palindromes.isPalindrome(testCase));
   }
 
   @Test
